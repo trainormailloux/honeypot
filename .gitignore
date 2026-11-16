@@ -1,0 +1,6 @@
+data/
+config.toml
+.env
+.deps-installed
+__pycache__/
+*.pyc

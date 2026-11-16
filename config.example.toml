@@ -1,0 +1,32 @@
+# Honeypot settings. Copy to config.toml to change them.
+
+# Address to listen on. "0.0.0.0" = all interfaces (needed if you forward ports to it).
+bind = "0.0.0.0"
+read_timeout_seconds = 10
+
+# Any other ports to watch. A connection to one is logged with the bytes sent
+# (great for catching scanners probing databases, RDP, etc.).
+# Note: ports below 1024 (23, 21, 445) need root/admin to bind; higher ones don't.
+extra_tcp_ports = [3389, 3306, 5432, 21, 23, 445]
+
+# Which fake services to run, and on which port(s).
+# Default to HIGH ports so you don't need root. To catch real scanners on the
+# standard ports (22, 23, 80), either run as root/admin or port-forward 22->2222 etc.
+[services]
+ssh = 2222
+telnet = 2323
+http = 8080
+
+[ssh]
+banner = "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.4"
+
+[telnet]
+banner = "Ubuntu 22.04 LTS"
+
+[telegram]
+# Alert at most once per IP per this many seconds (stops a hammering bot spamming you).
+per_ip_cooldown_seconds = 120
+
+[dashboard]
+host = "127.0.0.1"    # localhost only; use "0.0.0.0" to view from another device on your LAN
+port = 8888

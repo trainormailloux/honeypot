@@ -1,0 +1,21 @@
+# ZimaOS: App Store -> "+" (Custom Install) -> Import -> paste this file.
+# Put this project folder at /DATA/AppData/honeypot first (with your config.toml + .env).
+#
+# Map the REAL ports attackers probe (left) to the honeypot's listeners (right).
+# Example below catches real SSH (22) and Telnet (23) and a web login (80).
+name: honeypot
+services:
+  honeypot:
+    build: .
+    image: honeypot:latest
+    container_name: honeypot
+    restart: unless-stopped
+    environment:
+      - TZ=America/New_York
+    volumes:
+      - /DATA/AppData/honeypot:/app
+    ports:
+      - "22:2222"      # real SSH port  -> ssh honeypot
+      - "23:2323"      # real Telnet    -> telnet honeypot
+      - "80:8080"      # real HTTP      -> fake admin login
+      - "127.0.0.1:8888:8888"   # dashboard, localhost only
